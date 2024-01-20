@@ -45,6 +45,7 @@ import { store as productEditorUiStore } from '../../store/product-editor-ui';
 import { ModalEditor } from '../modal-editor';
 import { ProductEditorSettings } from '../editor';
 import { BlockEditorProps } from './types';
+import { LoadingState } from './loading-state';
 
 export function BlockEditor( {
 	context,
@@ -128,9 +129,9 @@ export function BlockEditor( {
 
 	const { updateEditorSettings } = useDispatch( 'core/editor' );
 
-	useLayoutEffect( () => {
-		const isEditorLoading = ! layoutTemplate || ! productTemplate;
+	const isEditorLoading = ! layoutTemplate || ! productTemplate;
 
+	useLayoutEffect( () => {
 		if ( isEditorLoading ) {
 			return;
 		}
@@ -190,8 +191,9 @@ export function BlockEditor( {
 					<BlockEditorKeyboardShortcuts.Register />
 					<BlockTools>
 						<ObserveTyping>
-							{ blocks.length < 1 && <div>No blocks yet!</div> }
-							{ blocks.length > 0 && (
+							{ isEditorLoading ? (
+								<LoadingState />
+							) : (
 								<BlockList className="woocommerce-product-block-editor__block-list" />
 							) }
 						</ObserveTyping>
