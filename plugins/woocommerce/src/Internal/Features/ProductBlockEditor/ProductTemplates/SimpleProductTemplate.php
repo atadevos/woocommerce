@@ -488,7 +488,7 @@ class SimpleProductTemplate extends AbstractProductFormTemplate implements Produ
 				)
 			);
 
-			$product_downloads_section_group->add_section(
+			$product_downloads_section_group->add_subsection(
 				array(
 					'id'             => 'product-downloads-section',
 					'order'          => 20,
