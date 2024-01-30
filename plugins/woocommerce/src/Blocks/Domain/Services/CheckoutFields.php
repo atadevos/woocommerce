@@ -745,7 +745,7 @@ class CheckoutFields {
 	}
 
 	/**
-	 * Persists a field value for a given order. This would also optionally set the field value on the customer.
+	 * Persists a field value for a given order. This would also optionally set the field value on the customer object if the order is linked to a registered customer.
 	 *
 	 * @param string   $key The field key.
 	 * @param mixed    $value The field value.
@@ -756,9 +756,8 @@ class CheckoutFields {
 	 */
 	public function persist_field_for_order( $key, $value, $order, $set_customer = true ) {
 		$this->set_array_meta( $key, $value, $order );
-		if ( $set_customer ) {
-			// Use order customer if it has one, otherwise use session.
-			$customer = $order->get_customer_id() ? new WC_Customer( $order->get_customer_id() ) : wc()->customer;
+		if ( $set_customer && $order->get_customer_id() ) {
+			$customer = new WC_Customer( $order->get_customer_id() );
 			$this->persist_field_for_customer( $key, $value, $customer );
 		}
 	}
@@ -966,7 +965,10 @@ class CheckoutFields {
 	 * @return array The filtered fields.
 	 */
 	public function filter_fields_for_customer( $fields ) {
-		$customer_fields_keys = $this->get_address_fields_keys();
+		$customer_fields_keys = array_merge(
+			$this->get_address_fields_keys(),
+			$this->get_contact_fields_keys()
+		);
 		return array_filter(
 			$fields,
 			function( $key ) use ( $customer_fields_keys ) {
