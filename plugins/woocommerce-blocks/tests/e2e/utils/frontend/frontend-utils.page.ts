@@ -26,14 +26,20 @@ export class FrontendUtils {
 		return block;
 	}
 
-	async addToCart( itemName = '' ) {
+	async addToCart( itemName = '', classicShop = false ) {
 		await this.page.waitForLoadState( 'domcontentloaded' );
 		if ( itemName !== '' ) {
-			await this.page
-				.getByRole( 'button', {
-					name: `Add to cart: “${ itemName }”`,
-				} )
-				.click();
+			if ( classicShop ) {
+				await this.page
+					.getByLabel( `Add to cart: “${ itemName }”` )
+					.click();
+			} else {
+				await this.page
+					.getByRole( 'button', {
+						name: `Add to cart: “${ itemName }”`,
+					} )
+					.click();
+			}
 		} else {
 			await this.page.click( 'text=Add to cart' );
 		}
@@ -52,6 +58,12 @@ export class FrontendUtils {
 
 	async goToCart() {
 		await this.page.goto( '/cart', {
+			waitUntil: 'commit',
+		} );
+	}
+
+	async goToCartShortcode() {
+		await this.page.goto( '/cart-shortcode', {
 			waitUntil: 'commit',
 		} );
 	}

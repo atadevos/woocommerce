@@ -18,6 +18,7 @@ import {
 	FrontendUtils,
 	StoreApiUtils,
 	PerformanceUtils,
+	WPCLIUtils,
 } from '@woocommerce/e2e-utils';
 
 /**
@@ -114,6 +115,7 @@ const test = base.extend<
 		storeApiUtils: StoreApiUtils;
 		performanceUtils: PerformanceUtils;
 		snapshotConfig: void;
+		wpCliUtils: WPCLIUtils;
 	},
 	{
 		requestUtils: RequestUtils;
@@ -153,6 +155,9 @@ const test = base.extend<
 	},
 	storeApiUtils: async ( { requestUtils }, use ) => {
 		await use( new StoreApiUtils( requestUtils ) );
+	},
+	wpCliUtils: async ( {}, use ) => {
+		await use( new WPCLIUtils() );
 	},
 	requestUtils: [
 		async ( {}, use, workerInfo ) => {

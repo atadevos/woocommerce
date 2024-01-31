@@ -6,3 +6,4 @@ export * from './api';
 export * from './editor';
 export * from './storeApi';
 export * from './performance';
+export * from './wpCli';
