@@ -1,7 +1,12 @@
 /**
+ * External dependencies
+ */
+import type { BaseControl } from '@wordpress/components';
+/**
  * Internal dependencies
  */
-import {
+import type { LabelProps } from '../../../components/label/label';
+import type {
 	ProductEditorBlockAttributes,
 	ProductEditorBlockEditProps,
 } from '../../../types';
@@ -20,15 +25,13 @@ type AllowedFormat =
 
 export type TextAreaBlockEditAttributes = ProductEditorBlockAttributes & {
 	property: string;
-	label?: string;
 	placeholder?: string;
-	help?: string;
-	required?: boolean;
 	disabled?: boolean;
 	align?: 'left' | 'center' | 'right' | 'justify';
 	allowedFormats?: AllowedFormat[];
 	direction?: 'ltr' | 'rtl';
-};
+} & LabelProps &
+	BaseControl.ControlProps;
 
 export type TextAreaBlockEditProps =
 	ProductEditorBlockEditProps< TextAreaBlockEditAttributes >;
