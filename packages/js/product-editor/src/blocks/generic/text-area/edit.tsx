@@ -19,6 +19,7 @@ import type {
 } from './types';
 import AligmentToolbarButton from './toolbar/toolbar-button-alignment';
 import useProductEntityProp from '../../../hooks/use-product-entity-prop';
+import { Label } from '../../../components/label/label';
 
 export function TextAreaBlockEdit( {
 	attributes,
@@ -28,6 +29,7 @@ export function TextAreaBlockEdit( {
 	const {
 		property,
 		label,
+		note,
 		placeholder,
 		help,
 		required,
@@ -35,7 +37,9 @@ export function TextAreaBlockEdit( {
 		align,
 		allowedFormats,
 		direction,
+		tooltip,
 	} = attributes;
+
 	const blockProps = useWooBlockProps( attributes, {
 		className: 'wp-block-woocommerce-product-text-area-field',
 		style: { direction },
@@ -69,6 +73,15 @@ export function TextAreaBlockEdit( {
 
 	const blockControlsProps = { group: 'block' };
 
+	const labelInstance = (
+		<Label
+			label={ label }
+			required={ required }
+			note={ note }
+			tooltip={ tooltip }
+		/>
+	);
+
 	return (
 		<div { ...blockProps }>
 			<BlockControls { ...blockControlsProps }>
@@ -85,7 +98,7 @@ export function TextAreaBlockEdit( {
 
 			<BaseControl
 				id={ contentId.toString() }
-				label={ label }
+				label={ labelInstance }
 				help={ help }
 			>
 				<RichText
