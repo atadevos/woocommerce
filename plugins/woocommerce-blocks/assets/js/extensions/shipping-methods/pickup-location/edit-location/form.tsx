@@ -65,6 +65,45 @@ const Form = ( {
 				} }
 			/>
 			<TextControl
+				label={ __( 'Cost', 'woocommerce' ) }
+				name={ 'location_cost' }
+				placeholder={ __( 'Cost', 'woocommerce' ) }
+				pattern="[0-9]+\.?[0-9]*"
+				required={ true }
+				type="number"
+				help={ __(
+					'Pickup cost (cents)'
+				) }
+				min={ 0 }
+				value={ values.cost }
+				onChange={ setLocationField( 'cost' ) }
+			/>
+			<TextControl
+				label={ __( 'Cut off Cost', 'woocommerce' ) }
+				name={ 'location_cut_off_cost' }
+				placeholder={ __( 'Cut off Cost', 'woocommerce' ) }
+				help={ __(
+					'Pickup cut off cost (cents)'
+				) }
+				required={ true }
+				pattern="[0-9]+\.?[0-9]*"
+				type="number"
+				min={ 0 }
+				value={ values.cut_off_cost }
+				onChange={ setLocationField( 'cut_off_cost' ) }
+			/>
+			<TextControl
+				label={ __( 'Capacity', 'woocommerce' ) }
+				name={ 'location_capacity' }
+				placeholder={ __( 'Cut off Cost', 'woocommerce' ) }
+				required={ true }
+				pattern="[0-9]+\.?[0-9]*"
+				type="number"
+				min={ 0 }
+				value={ values.capacity }
+				onChange={ setLocationField( 'capacity' ) }
+			/>
+			<TextControl
 				label={ __( 'Address', 'woocommerce' ) }
 				name={ 'location_address' }
 				placeholder={ __( 'Address', 'woocommerce' ) }

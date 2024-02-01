@@ -104,11 +104,14 @@ class PickupLocation extends WC_Shipping_Method {
 						// This is the label shown in shipping rate/method context e.g. London (Local Pickup).
 						'label'     => wp_kses_post( $this->title . ' (' . $location['name'] . ')' ),
 						'package'   => $package,
-						'cost'      => $this->cost,
+						'cost'      => wp_kses_post( $location['cost'] ) / 100,
 						'meta_data' => array(
 							'pickup_location' => wp_kses_post( $location['name'] ),
 							'pickup_address'  => $this->has_valid_pickup_location( $location['address'] ) ? wc()->countries->get_formatted_address( $location['address'], ', ' ) : '',
 							'pickup_details'  => wp_kses_post( $location['details'] ),
+							'cost'  => wp_kses_post( $location['cost'] ),
+							'cut_off_cost'  => wp_kses_post( $location['cut_off_cost'] ),
+							'capacity' => wp_kses_post( $location['capacity'] ),
 						),
 					)
 				);

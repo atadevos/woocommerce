@@ -130,6 +130,9 @@ const LocationSettings = () => {
 						editingLocation === 'new'
 							? {
 									name: '',
+									cost: '',
+									cut_off_cost: '',
+									capacity: '',
 									details: '',
 									enabled: true,
 									address: {

@@ -250,6 +250,15 @@ class ShippingController {
 								'name'    => [
 									'type' => 'string',
 								],
+								'cost'       => [
+									'type'        => 'string',
+								],
+								'cut_off_cost'       => [
+									'type'        => 'string',
+								],
+								'capacity'       => [
+									'type'        => 'string',
+								],
 								'address' => [
 									'type'       => 'object',
 									'properties' => array(
@@ -294,6 +303,9 @@ class ShippingController {
 		foreach ( $locations as $location ) {
 			$formatted_pickup_locations[] = [
 				'name'    => $location['name'],
+				'cost'    => $location['cost'],
+				'cut_off_cost'    => $location['cut_off_cost'],
+				'capacity'    => $location['capacity'],
 				'address' => $location['address'],
 				'details' => $location['details'],
 				'enabled' => wc_string_to_bool( $location['enabled'] ),

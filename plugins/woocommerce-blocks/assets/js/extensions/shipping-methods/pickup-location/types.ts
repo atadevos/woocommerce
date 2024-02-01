@@ -12,6 +12,9 @@ export interface PickupLocation {
 	name: string;
 	details: string;
 	enabled: boolean;
+	capacity: number;
+	cost: number;
+	cut_off_cost: number;
 	address: {
 		address_1: string;
 		city: string;

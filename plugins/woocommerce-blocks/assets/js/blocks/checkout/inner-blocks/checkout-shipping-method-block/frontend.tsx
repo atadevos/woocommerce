@@ -63,6 +63,11 @@ const FrontendBlock = ( {
 		return null;
 	}
 
+	/**
+	 * @TODO AT find better way of skipping this view
+	 */
+	return null;
+
 	const onChange = ( method: string ) => {
 		if ( method === 'pickup' ) {
 			setPrefersCollection( true );

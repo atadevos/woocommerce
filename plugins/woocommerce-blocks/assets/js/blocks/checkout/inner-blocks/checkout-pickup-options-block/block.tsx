@@ -66,13 +66,31 @@ const getPickupDetails = (
 	return '';
 };
 
+const getMetadataItem = (
+	option: CartShippingPackageShippingRate,
+	itemKey: string
+): string => {
+
+	if ( option?.meta_data ) {
+		const match = option.meta_data.find(
+			( meta ) => meta.key === itemKey
+		);
+		return match ? match.value : '';
+	}
+	return '';
+};
+
 const renderPickupLocation = (
 	option: CartShippingPackageShippingRate,
 	packageCount: number
 ): RadioControlOptionType => {
+
+	const cost = getMetadataItem(option, 'cost');
+	const cutOffCost = getMetadataItem(option, 'cut_off_cost');
 	const priceWithTaxes = getSetting( 'displayCartPricesIncludingTax', false )
-		? parseInt( option.price, 10 ) + parseInt( option.taxes, 10 )
-		: option.price;
+		? parseInt( cost, 10 ) + parseInt( option.taxes, 10 )
+		: cost;
+
 	const location = getPickupLocation( option );
 	const address = getPickupAddress( option );
 	const details = getPickupDetails( option );

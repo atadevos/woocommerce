@@ -122,6 +122,9 @@ export const SettingsProvider = ( {
 			},
 			pickup_locations: pickupLocations.map( ( location ) => ( {
 				name: location.name,
+				cost: location.cost,
+				cut_off_cost: location.cut_off_cost,
+				capacity: location.capacity,
 				address: location.address,
 				details: location.details,
 				enabled: location.enabled,

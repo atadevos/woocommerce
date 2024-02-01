@@ -68,9 +68,9 @@ export const defaultCartState: CartState = {
 		itemsCount: 0,
 		itemsWeight: 0,
 		crossSells: EMPTY_CART_CROSS_SELLS,
-		needsShipping: true,
+		needsShipping: false,
 		needsPayment: false,
-		hasCalculatedShipping: true,
+		hasCalculatedShipping: false,
 		fees: EMPTY_CART_FEES,
 		totals: {
 			currency_code: '',
