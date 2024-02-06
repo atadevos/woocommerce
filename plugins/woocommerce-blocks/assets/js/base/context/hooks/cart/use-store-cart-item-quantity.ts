@@ -155,6 +155,7 @@ export const useStoreCartItemQuantity = (
 
 	return {
 		isPendingDelete: isPending.delete,
+		isPendingQuantity: isPending.quantity,
 		quantity,
 		setItemQuantity: setQuantity,
 		removeItem,

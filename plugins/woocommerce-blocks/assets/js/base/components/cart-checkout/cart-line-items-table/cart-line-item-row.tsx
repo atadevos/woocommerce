@@ -113,7 +113,7 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 			extensions,
 		} = lineItem;
 
-		const { quantity, setItemQuantity, removeItem, isPendingDelete } =
+		const { quantity, setItemQuantity, removeItem, isPendingDelete, isPendingQuantity } =
 			useStoreCartItemQuantity( lineItem );
 		const { dispatchStoreEvent } = useStoreEvents();
 
@@ -289,7 +289,7 @@ const CartLineItemRow: React.ForwardRefExoticComponent<
 							{ ! soldIndividually &&
 								!! quantityLimits.editable && (
 									<QuantitySelector
-										disabled={ isPendingDelete }
+										disabled={ isPendingDelete || isPendingQuantity }
 										quantity={ quantity }
 										minimum={ quantityLimits.minimum }
 										maximum={ quantityLimits.maximum }
