@@ -9,6 +9,7 @@ import { SelectControl, TextControl } from '@wordpress/components';
  */
 import type { PickupLocation } from '../types';
 import { countryStateOptions, states } from '../utils';
+import {upperCase} from "lodash";
 
 const Form = ( {
 	formRef,
@@ -79,23 +80,9 @@ const Form = ( {
 				onChange={ setLocationField( 'cost' ) }
 			/>
 			<TextControl
-				label={ __( 'Cut off Cost', 'woocommerce' ) }
-				name={ 'location_cut_off_cost' }
-				placeholder={ __( 'Cut off Cost', 'woocommerce' ) }
-				help={ __(
-					'Pickup cut off cost (cents)'
-				) }
-				required={ true }
-				pattern="[0-9]+\.?[0-9]*"
-				type="number"
-				min={ 0 }
-				value={ values.cut_off_cost }
-				onChange={ setLocationField( 'cut_off_cost' ) }
-			/>
-			<TextControl
-				label={ __( 'Capacity', 'woocommerce' ) }
+				label={ __( 'Refrigerated Slots Available', 'woocommerce' ) }
 				name={ 'location_capacity' }
-				placeholder={ __( 'Cut off Cost', 'woocommerce' ) }
+				placeholder={ __( 'Capacity', 'woocommerce' ) }
 				required={ true }
 				pattern="[0-9]+\.?[0-9]*"
 				type="number"
@@ -103,6 +90,60 @@ const Form = ( {
 				value={ values.capacity }
 				onChange={ setLocationField( 'capacity' ) }
 			/>
+
+
+			<SelectControl
+				label={ __( 'Day of week', 'woocommerce' ) }
+				name="dow"
+				options={
+					[	'sunday',
+						'monday',
+						'tuesday',
+						'wednesday',
+						'thursday',
+						'friday',
+						'saturday'].map((el) => (
+						{
+							label: __( upperCase(el), 'woocommerce' ),
+							value: el,
+						}))
+				}
+				value={ values.dow || '' }
+				// onChange={ setSettingField( 'tax_status' ) }
+				onChange={ setLocationField( 'dow' )}
+				disabled={ false }
+			/>
+
+			<TextControl
+				label={ __( 'Time Window', 'woocommerce' ) }
+				name={ 'timeslot' }
+				placeholder={ __( 'Time Window', 'woocommerce' ) }
+				required={ true }
+				type="text"
+				value={ values.timeslot }
+				onChange={ setLocationField( 'timeslot' ) }
+			/>
+
+			<TextControl
+				label={ __( 'Latitude', 'woocommerce' ) }
+				name={ 'place_latitude' }
+				placeholder={ __( 'Latitude', 'woocommerce' ) }
+				required={ true }
+				type="text"
+				value={ values.place_latitude }
+				onChange={ setLocationField( 'place_latitude' ) }
+			/>
+
+			<TextControl
+				label={ __( 'Longitude', 'woocommerce' ) }
+				name={ 'place_longitude' }
+				placeholder={ __( 'Longitude', 'woocommerce' ) }
+				required={ true }
+				type="text"
+				value={ values.place_longitude }
+				onChange={ setLocationField( 'place_longitude' ) }
+			/>
+
 			<TextControl
 				label={ __( 'Address', 'woocommerce' ) }
 				name={ 'location_address' }

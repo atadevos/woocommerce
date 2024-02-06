@@ -14,7 +14,10 @@ export interface PickupLocation {
 	enabled: boolean;
 	capacity: number;
 	cost: number;
-	cut_off_cost: number;
+	dow: string;
+	place_longitude: string;
+	place_latitude: string;
+	timeslot: string;
 	address: {
 		address_1: string;
 		city: string;

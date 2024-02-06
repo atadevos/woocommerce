@@ -15,6 +15,16 @@ class PickupLocation extends WC_Shipping_Method {
 	 */
 	protected $pickup_locations = [];
 
+	const WEEKDAYS = [
+		'sunday',
+		'monday',
+		'tuesday',
+		'wednesday',
+		'thursday',
+		'friday',
+		'saturday'
+		];
+
 	/**
 	 * Cost
 	 *
@@ -94,23 +104,29 @@ class PickupLocation extends WC_Shipping_Method {
 	 */
 	public function calculate_shipping( $package = array() ) {
 		if ( $this->pickup_locations ) {
+
 			foreach ( $this->pickup_locations as $index => $location ) {
-				if ( ! $location['enabled'] ) {
+				if ( ! $location['enabled']  ||
+					apply_filters('hfm_filter_location_by_capacity', $location, $package)) {
 					continue;
 				}
 				$this->add_rate(
 					array(
 						'id'        => $this->id . ':' . $index,
 						// This is the label shown in shipping rate/method context e.g. London (Local Pickup).
-						'label'     => wp_kses_post( $this->title . ' (' . $location['name'] . ')' ),
+//						'label'     => wp_kses_post( $this->title . ' (' . $location['name'] . ')' ),
+						'label'     => wp_kses_post( $location['name'] ),
 						'package'   => $package,
-						'cost'      => wp_kses_post( $location['cost'] ) / 100,
+						'cost'      => sanitize_text_field( $location['cost'] ),
 						'meta_data' => array(
 							'pickup_location' => wp_kses_post( $location['name'] ),
 							'pickup_address'  => $this->has_valid_pickup_location( $location['address'] ) ? wc()->countries->get_formatted_address( $location['address'], ', ' ) : '',
 							'pickup_details'  => wp_kses_post( $location['details'] ),
-							'cost'  => wp_kses_post( $location['cost'] ),
-							'cut_off_cost'  => wp_kses_post( $location['cut_off_cost'] ),
+							'cost'  => sanitize_text_field( $location['cost'] ),
+							'dow' => in_array($location['dow'], self::WEEKDAYS),
+							'timeslot' => sanitize_text_field( $location['timeslot'] ),
+							'place_longitude' => sanitize_text_field($location['place_longitude']),
+							'place_latitude' => sanitize_text_field($location['place_latitude']),
 							'capacity' => wp_kses_post( $location['capacity'] ),
 						),
 					)

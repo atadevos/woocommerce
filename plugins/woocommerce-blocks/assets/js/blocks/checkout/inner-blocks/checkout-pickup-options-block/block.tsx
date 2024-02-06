@@ -86,7 +86,6 @@ const renderPickupLocation = (
 ): RadioControlOptionType => {
 
 	const cost = getMetadataItem(option, 'cost');
-	const cutOffCost = getMetadataItem(option, 'cut_off_cost');
 	const priceWithTaxes = getSetting( 'displayCartPricesIncludingTax', false )
 		? parseInt( cost, 10 ) + parseInt( option.taxes, 10 )
 		: cost;

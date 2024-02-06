@@ -131,10 +131,13 @@ const LocationSettings = () => {
 							? {
 									name: '',
 									cost: '',
-									cut_off_cost: '',
 									capacity: '',
 									details: '',
 									enabled: true,
+									dow: '',
+									place_longitude: '',
+									place_latitude: '',
+									timeslot: '',
 									address: {
 										address_1: '',
 										city: '',

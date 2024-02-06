@@ -22,11 +22,14 @@ const SettingsWrapper = styled.form`
 	}
 `;
 
+/**
+ * GeneralSettings is disabled, as HFM only uses pickup delivery, we no need to enable disable pickup
+ */
 const SettingsPage = () => {
 	return (
 		<SettingsWrapper id="local-pickup-settings">
 			<SettingsProvider>
-				<GeneralSettings />
+				{/*<GeneralSettings />*/}
 				<LocationSettings />
 				<SaveSettings />
 			</SettingsProvider>

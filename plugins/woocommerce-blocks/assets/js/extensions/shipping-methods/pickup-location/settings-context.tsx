@@ -123,11 +123,14 @@ export const SettingsProvider = ( {
 			pickup_locations: pickupLocations.map( ( location ) => ( {
 				name: location.name,
 				cost: location.cost,
-				cut_off_cost: location.cut_off_cost,
 				capacity: location.capacity,
 				address: location.address,
 				details: location.details,
 				enabled: location.enabled,
+				dow: location.dow,
+				place_longitude: location.place_longitude,
+				place_latitude: location.place_latitude,
+				timeslot: location.timeslot,
 			} ) ),
 		};
 

@@ -253,10 +253,20 @@ class ShippingController {
 								'cost'       => [
 									'type'        => 'string',
 								],
-								'cut_off_cost'       => [
+								'capacity'       => [
 									'type'        => 'string',
 								],
-								'capacity'       => [
+								'dow' => [
+									'type'        => 'string',
+									'enum'		  => PickupLocation::WEEKDAYS
+								],
+								'timeslot'       => [
+									'type'        => 'string',
+								],
+								'place_longitude'       => [
+									'type'        => 'string',
+								],
+								'place_latitude'       => [
 									'type'        => 'string',
 								],
 								'address' => [
@@ -304,8 +314,11 @@ class ShippingController {
 			$formatted_pickup_locations[] = [
 				'name'    => $location['name'],
 				'cost'    => $location['cost'],
-				'cut_off_cost'    => $location['cut_off_cost'],
 				'capacity'    => $location['capacity'],
+				'dow' => $location['dow'],
+				'timeslot' => $location['timeslot'],
+				'place_longitude' => $location['place_longitude'],
+				'place_latitude' => $location['place_latitude'],
 				'address' => $location['address'],
 				'details' => $location['details'],
 				'enabled' => wc_string_to_bool( $location['enabled'] ),
