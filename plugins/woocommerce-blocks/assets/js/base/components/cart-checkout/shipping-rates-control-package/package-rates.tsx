@@ -62,7 +62,8 @@ const PackageRates = ( {
 		if ( selectedOption ) {
 			onSelectRate( selectedOption );
 		}
-	}, [ onSelectRate, selectedOption ] );
+	}, [] );
+	//this should be called only once
 
 	if ( rates.length === 0 ) {
 		return noResultsMessage;

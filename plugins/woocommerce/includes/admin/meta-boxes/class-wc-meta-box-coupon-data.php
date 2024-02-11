@@ -135,6 +135,26 @@ class WC_Meta_Box_Coupon_Data {
 				<?php
 
 				echo '<div class="options_group">';
+				?>
+
+				<p class="form-field">
+					<label for="pickup_location"><?php _e( 'Pickup Locations', 'woocommerce' ); ?></label>
+					<select id="pickup_location" name="pickup_location" style="width: 50%;"  class="select short" data-placeholder="<?php esc_attr_e( 'Any location', 'woocommerce' ); ?>">
+						<option></option>
+						<?php
+
+						$pickup_locations = get_option( 'pickup_location_pickup_locations', [] );
+						$selected_location = $coupon->get_pickup_location( 'edit' );
+
+						if ( $pickup_locations ) {
+							foreach ( $pickup_locations as $location ) {
+								echo '<option value="' . esc_attr( $location['name'] ) . '"' . wc_selected( $location['name'], $selected_location ) . '>' . esc_html( $location['name'] ) . '</option>';
+							}
+						}
+						?>
+					</select> <?php echo wc_help_tip( __( 'Pickup location that the coupon will be applied to', 'woocommerce' ) ); ?>
+				</p>
+				<?php
 
 				// minimum spend.
 				woocommerce_wp_text_input(
@@ -377,6 +397,7 @@ class WC_Meta_Box_Coupon_Data {
 				'product_ids'                 => isset( $_POST['product_ids'] ) ? array_filter( array_map( 'intval', (array) $_POST['product_ids'] ) ) : array(),
 				'excluded_product_ids'        => isset( $_POST['exclude_product_ids'] ) ? array_filter( array_map( 'intval', (array) $_POST['exclude_product_ids'] ) ) : array(),
 				'usage_limit'                 => absint( $_POST['usage_limit'] ),
+				'pickup_location'             => sanitize_text_field( $_POST['pickup_location'] ),
 				'usage_limit_per_user'        => absint( $_POST['usage_limit_per_user'] ),
 				'limit_usage_to_x_items'      => absint( $_POST['limit_usage_to_x_items'] ),
 				'free_shipping'               => isset( $_POST['free_shipping'] ),

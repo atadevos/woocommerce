@@ -45,6 +45,7 @@ class WC_Coupon extends WC_Legacy_Coupon {
 		'free_shipping'               => false,
 		'product_categories'          => array(),
 		'excluded_product_categories' => array(),
+		'pickup_location' 			  => '',
 		'exclude_sale_items'          => false,
 		'minimum_amount'              => '',
 		'maximum_amount'              => '',
@@ -360,6 +361,10 @@ class WC_Coupon extends WC_Legacy_Coupon {
 	 */
 	public function get_excluded_product_categories( $context = 'view' ) {
 		return $this->get_prop( 'excluded_product_categories', $context );
+	}
+
+	public function get_pickup_location( $context = 'view' ) {
+		return $this->get_prop( 'pickup_location', $context );
 	}
 
 	/**
@@ -684,6 +689,10 @@ class WC_Coupon extends WC_Legacy_Coupon {
 		$this->set_prop( 'excluded_product_categories', array_filter( wp_parse_id_list( (array) $excluded_product_categories ) ) );
 	}
 
+	public function set_pickup_location( $pickup_location ) {
+		$this->set_prop( 'pickup_location', $pickup_location );
+	}
+
 	/**
 	 * Set if this coupon should excluded sale items or not.
 	 *
@@ -778,6 +787,12 @@ class WC_Coupon extends WC_Legacy_Coupon {
 					if ( ! is_array( $coupon[ $key ] ) ) {
 						wc_doing_it_wrong( $key, $key . ' should be an array instead of a string.', '3.0' );
 						$coupon['excluded_product_categories'] = wc_string_to_array( $value );
+					}
+					break;
+				case 'pickup_location':
+					if ( ! is_string( $coupon[ $key ] ) ) {
+						wc_doing_it_wrong( $key, $key . ' should be string', '3.0' );
+						$coupon['pickup_location'] = $value;
 					}
 					break;
 				case 'product_ids':

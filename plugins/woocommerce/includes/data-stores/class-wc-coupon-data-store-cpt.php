@@ -122,6 +122,7 @@ class WC_Coupon_Data_Store_CPT extends WC_Data_Store_WP implements WC_Coupon_Dat
 		$coupon->set_props(
 			array(
 				'code'                        => $post_object->post_title,
+				'pickup_location'			  => get_post_meta( $coupon_id, 'pickup_location', true ),
 				'description'                 => $post_object->post_excerpt,
 				'status'                      => $post_object->post_status,
 				'date_created'                => $this->string_to_timestamp( $post_object->post_date_gmt ),
@@ -246,6 +247,7 @@ class WC_Coupon_Data_Store_CPT extends WC_Data_Store_WP implements WC_Coupon_Dat
 			'limit_usage_to_x_items'     => 'limit_usage_to_x_items',
 			'usage_count'                => 'usage_count',
 			'date_expires'               => 'date_expires',
+			'pickup_location'            => 'pickup_location',
 			'free_shipping'              => 'free_shipping',
 			'product_categories'         => 'product_categories',
 			'exclude_product_categories' => 'excluded_product_categories',
