@@ -122,7 +122,7 @@ class WC_Coupon_Data_Store_CPT extends WC_Data_Store_WP implements WC_Coupon_Dat
 		$coupon->set_props(
 			array(
 				'code'                        => $post_object->post_title,
-				'pickup_location'			  => get_post_meta( $coupon_id, 'pickup_location', true),
+				'pickup_location'			  => get_post_meta( $coupon_id, 'pickup_location', true ),
 				'description'                 => $post_object->post_excerpt,
 				'status'                      => $post_object->post_status,
 				'date_created'                => $this->string_to_timestamp( $post_object->post_date_gmt ),
