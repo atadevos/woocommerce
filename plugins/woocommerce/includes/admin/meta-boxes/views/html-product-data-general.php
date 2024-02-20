@@ -36,7 +36,7 @@ defined( 'ABSPATH' ) || exit;
 		?>
 	</div>
 
-	<div class="options_group pricing show_if_simple show_if_external hidden">
+	<div class="options_group pricing show_if_simple show_if_custom show_if_external hidden">
 		<?php
 		woocommerce_wp_text_input(
 			array(
@@ -170,7 +170,7 @@ defined( 'ABSPATH' ) || exit;
 	</div>
 
 	<?php if ( wc_tax_enabled() ) : ?>
-		<div class="options_group show_if_simple show_if_external show_if_variable">
+		<div class="options_group show_if_simple show_if_custom show_if_external show_if_variable">
 			<?php
 			woocommerce_wp_select(
 				array(

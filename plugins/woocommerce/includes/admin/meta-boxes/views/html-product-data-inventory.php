@@ -43,7 +43,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				array(
 					'id'            => '_manage_stock',
 					'value'         => $product_object->get_manage_stock( 'edit' ) ? 'yes' : 'no',
-					'wrapper_class' => 'show_if_simple show_if_variable',
+					'wrapper_class' => 'show_if_simple show_if_variable show_if_custom',
 					'label'         => __( 'Stock management', 'woocommerce' ),
 					'description'   => __( 'Track stock quantity for this product', 'woocommerce' ),
 				)
@@ -51,7 +51,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 			do_action( 'woocommerce_product_options_stock' );
 
-			echo '<div class="stock_fields show_if_simple show_if_variable">';
+			echo '<div class="stock_fields show_if_simple show_if_variable show_if_custom">';
 
 			woocommerce_wp_text_input(
 				array(
@@ -124,7 +124,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 						__( 'Disabled in <a href="%s" aria-label="stock management store settings">store settings</a>.', 'woocommerce' ),
 						esc_url( 'admin.php?page=wc-settings&tab=products&section=inventory' )
 					),
-					'wrapper_class'    => 'show_if_simple show_if_variable',
+					'wrapper_class'    => 'show_if_simple show_if_variable show_if_custom',
 				)
 			);
 
@@ -159,13 +159,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 		?>
 	</div>
 
-	<div class="inventory_sold_individually options_group show_if_simple show_if_variable">
+	<div class="inventory_sold_individually options_group show_if_simple show_if_variable show_if_custom">
 		<?php
 		woocommerce_wp_checkbox(
 			array(
 				'id'            => '_sold_individually',
 				'value'         => $product_object->get_sold_individually( 'edit' ) ? 'yes' : 'no',
-				'wrapper_class' => 'show_if_simple show_if_variable',
+				'wrapper_class' => 'show_if_simple show_if_variable show_if_custom',
 				'label'         => __( 'Sold individually', 'woocommerce' ),
 				'description'   => __( 'Limit purchases to 1 item per order', 'woocommerce' ),
 			)
