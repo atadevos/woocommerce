@@ -363,7 +363,7 @@ class WC_Meta_Box_Order_Data {
 						</p>
 						<?php do_action( 'woocommerce_admin_order_data_after_order_details', $order ); // phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment ?>
 					</div>
-					<div class="order_data_column">
+					<div class="order_data_column" style="width:25%">
 						<h3>
 							<?php esc_html_e( 'Billing', 'woocommerce' ); ?>
 							<a href="#" class="edit_address"><?php esc_html_e( 'Edit', 'woocommerce' ); ?></a>
@@ -482,104 +482,7 @@ class WC_Meta_Box_Order_Data {
 						</div>
 						<?php do_action( 'woocommerce_admin_order_data_after_billing_address', $order ); // phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment ?>
 					</div>
-					<div class="order_data_column">
-						<h3>
-							<?php esc_html_e( 'Shipping', 'woocommerce' ); ?>
-							<a href="#" class="edit_address"><?php esc_html_e( 'Edit', 'woocommerce' ); ?></a>
-							<span>
-								<a href="#" class="load_customer_shipping" style="display:none;"><?php esc_html_e( 'Load shipping address', 'woocommerce' ); ?></a>
-								<a href="#" class="billing-same-as-shipping" style="display:none;"><?php esc_html_e( 'Copy billing address', 'woocommerce' ); ?></a>
-							</span>
-						</h3>
-						<div class="address">
-							<?php
-
-							// Display values.
-							if ( $order->get_formatted_shipping_address() ) {
-								echo '<p>' . wp_kses( $order->get_formatted_shipping_address(), array( 'br' => array() ) ) . '</p>';
-							} else {
-								echo '<p class="none_set"><strong>' . esc_html__( 'Address:', 'woocommerce' ) . '</strong> ' . esc_html__( 'No shipping address set.', 'woocommerce' ) . '</p>';
-							}
-
-							if ( ! empty( self::$shipping_fields ) ) {
-								foreach ( self::$shipping_fields as $key => $field ) {
-									if ( isset( $field['show'] ) && false === $field['show'] ) {
-										continue;
-									}
-
-									$field_name = 'shipping_' . $key;
-
-									if ( is_callable( array( $order, 'get_' . $field_name ) ) ) {
-										$field_value = $order->{"get_$field_name"}( 'edit' );
-									} else {
-										$field_value = $order->get_meta( '_' . $field_name );
-									}
-
-									if ( 'shipping_phone' === $field_name ) {
-										$field_value = wc_make_phone_clickable( $field_value );
-									}
-
-									if ( $field_value ) {
-										echo '<p><strong>' . esc_html( $field['label'] ) . ':</strong> ' . wp_kses_post( $field_value ) . '</p>';
-									}
-								}
-							}
-
-							if ( apply_filters( 'woocommerce_enable_order_notes_field', 'yes' === get_option( 'woocommerce_enable_order_comments', 'yes' ) ) && $order->get_customer_note() ) { // phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
-								echo '<p class="order_note"><strong>' . esc_html( __( 'Customer provided note:', 'woocommerce' ) ) . '</strong> ' . nl2br( esc_html( $order->get_customer_note() ) ) . '</p>';
-							}
-							?>
-						</div>
-						<div class="edit_address">
-							<?php
-
-							// Display form.
-							if ( ! empty( self::$shipping_fields ) ) {
-								foreach ( self::$shipping_fields as $key => $field ) {
-									if ( ! isset( $field['type'] ) ) {
-										$field['type'] = 'text';
-									}
-									if ( ! isset( $field['id'] ) ) {
-										$field['id'] = '_shipping_' . $key;
-									}
-
-									$field_name = 'shipping_' . $key;
-
-									if ( is_callable( array( $order, 'get_' . $field_name ) ) ) {
-										$field['value'] = $order->{"get_$field_name"}( 'edit' );
-									} else {
-										$field['value'] = $order->get_meta( '_' . $field_name );
-									}
-
-									switch ( $field['type'] ) {
-										case 'select':
-											woocommerce_wp_select( $field, $order );
-											break;
-										default:
-											woocommerce_wp_text_input( $field, $order );
-											break;
-									}
-								}
-							}
-
-							/**
-							 * Allows 3rd parties to alter whether the customer note should be displayed on the admin.
-							 *
-							 * @since 2.1.0
-							 *
-							 * @param bool TRUE if the note should be displayed. FALSE otherwise.
-							 */
-							if ( apply_filters( 'woocommerce_enable_order_notes_field', 'yes' === get_option( 'woocommerce_enable_order_comments', 'yes' ) ) ) :
-								?>
-								<p class="form-field form-field-wide">
-									<label for="customer_note"><?php esc_html_e( 'Customer provided note', 'woocommerce' ); ?>:</label>
-									<textarea rows="1" cols="40" name="customer_note" tabindex="6" id="excerpt" placeholder="<?php esc_attr_e( 'Customer notes about the order', 'woocommerce' ); ?>"><?php echo wp_kses_post( $order->get_customer_note() ); ?></textarea>
-								</p>
-							<?php endif; ?>
-						</div>
-
-						<?php do_action( 'woocommerce_admin_order_data_after_shipping_address', $order ); // phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment ?>
-					</div>
+					<!-- Shipping address show disabled -->
 				</div>
 				<div class="clear"></div>
 			</div>
