@@ -10,7 +10,7 @@ export const DEFAULT_DESCRIPTION = __(
 );
 
 export const DEFAULT_FORCED_BILLING_TITLE = __(
-	'Billing and shipping address',
+	'Billing address',
 	'woocommerce'
 );
 export const DEFAULT_FORCED_BILLING_DESCRIPTION = __(

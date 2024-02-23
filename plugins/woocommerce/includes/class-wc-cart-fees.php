@@ -38,6 +38,7 @@ final class WC_Cart_Fees {
 		'taxable'   => false,
 		'amount'    => 0,
 		'total'     => 0,
+		'description'     => '',
 	);
 
 	/**
@@ -75,6 +76,7 @@ final class WC_Cart_Fees {
 		$fee_props->tax_class = in_array( $fee_props->tax_class, array_merge( WC_Tax::get_tax_classes(), WC_Tax::get_tax_class_slugs() ), true ) ? $fee_props->tax_class : '';
 		$fee_props->taxable   = wc_string_to_bool( $fee_props->taxable );
 		$fee_props->amount    = wc_format_decimal( $fee_props->amount );
+		$fee_props->description    = sanitize_text_field( $fee_props->description );
 
 		if ( empty( $fee_props->id ) ) {
 			$fee_props->id = $this->generate_id( $fee_props );

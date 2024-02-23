@@ -258,7 +258,6 @@ class ShippingController {
 								],
 								'dow' => [
 									'type'        => 'string',
-									'enum'		  => 'string'
 								],
 								'timeslot'       => [
 									'type'        => 'string',

@@ -74,6 +74,7 @@ class CartFeeSchema extends AbstractSchema {
 		return [
 			'key'    => $fee->id,
 			'name'   => $this->prepare_html_response( $fee->name ),
+			'description' => $fee->description,
 			'totals' => (object) $this->prepare_currency_response(
 				[
 					'total'     => $this->prepare_money_response( $fee->total, wc_get_price_decimals() ),

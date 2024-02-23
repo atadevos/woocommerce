@@ -1938,13 +1938,14 @@ class WC_Cart extends WC_Legacy_Cart {
 	 * @param bool   $taxable   Is the fee taxable? (default: false).
 	 * @param string $tax_class The tax class for the fee if taxable. A blank string is standard tax class. (default: '').
 	 */
-	public function add_fee( $name, $amount, $taxable = false, $tax_class = '' ) {
+	public function add_fee( $name, $amount, $taxable = false, $tax_class = '', $description = '' ) {
 		$this->fees_api()->add_fee(
 			array(
 				'name'      => $name,
 				'amount'    => (float) $amount,
 				'taxable'   => $taxable,
 				'tax_class' => $tax_class,
+				'description' => $description
 			)
 		);
 	}

@@ -165,6 +165,7 @@ export interface CartFeeItem {
 	key: string;
 	id: string;
 	name: string;
+	description: string;
 	totals: CartFeeItemTotals;
 }
 
