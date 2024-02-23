@@ -258,7 +258,7 @@ class ShippingController {
 								],
 								'dow' => [
 									'type'        => 'string',
-									'enum'		  => PickupLocation::WEEKDAYS
+									'enum'		  => 'string'
 								],
 								'timeslot'       => [
 									'type'        => 'string',

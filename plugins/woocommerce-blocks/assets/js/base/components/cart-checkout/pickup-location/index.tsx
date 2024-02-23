@@ -38,10 +38,7 @@ const PickupLocation = (): JSX.Element | null => {
 			if(isObject( dow ) &&
 				objectHasProp( dow, 'value' ) &&
 				dow.value) {
-				const dIndex = parseInt(dow.value, 10);
-				if(dIndex) {
-					dayOfWeek = DOWS[dIndex];
-				}
+				dayOfWeek = dow.value;
 			}
 			const timeSlotRaw = selectedCollectableRate.meta_data.find(
 				( meta ) => meta.key === "timeslot"

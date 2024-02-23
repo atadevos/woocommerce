@@ -15,15 +15,6 @@ class PickupLocation extends WC_Shipping_Method {
 	 */
 	protected $pickup_locations = [];
 
-	const WEEKDAYS = [
-		'sunday',
-		'monday',
-		'tuesday',
-		'wednesday',
-		'thursday',
-		'friday',
-		'saturday'
-		];
 
 	/**
 	 * Cost
@@ -123,7 +114,7 @@ class PickupLocation extends WC_Shipping_Method {
 							'pickup_address'  => $this->has_valid_pickup_location( $location['address'] ) ? wc()->countries->get_formatted_address( $location['address'], ', ' ) : '',
 							'pickup_details'  => wp_kses_post( $location['details'] ),
 							'cost'  => sanitize_text_field( $location['cost'] ),
-							'dow' => in_array($location['dow'], self::WEEKDAYS),
+							'dow' => ucfirst($location['dow']), //@Aram Tadevosyan review this
 							'timeslot' => sanitize_text_field( $location['timeslot'] ),
 							'place_longitude' => sanitize_text_field($location['place_longitude']),
 							'place_latitude' => sanitize_text_field($location['place_latitude']),
