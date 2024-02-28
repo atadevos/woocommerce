@@ -45,7 +45,7 @@ class WC_Admin_Menus {
 		add_action( 'admin_menu', array( $this, 'maybe_add_new_product_management_experience' ) );
 		add_action( 'admin_menu', array( $this, 'admin_menu' ), 9 );
 		add_action( 'admin_menu', array( $this, 'orders_menu' ), 9 );
-		add_action( 'admin_menu', array( $this, 'reports_menu' ), 20 );
+//		add_action( 'admin_menu', array( $this, 'reports_menu' ), 20 ); //remove deprecated reports, as there is an analytics block
 		add_action( 'admin_menu', array( $this, 'settings_menu' ), 50 );
 		add_action( 'admin_menu', array( $this, 'status_menu' ), 60 );
 

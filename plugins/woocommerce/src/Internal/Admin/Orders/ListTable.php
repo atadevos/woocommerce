@@ -1471,40 +1471,43 @@ class ListTable extends WP_List_Table {
 							<?php do_action( 'woocommerce_admin_order_preview_start' ); // phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment ?>
 
 							<div class="wc-order-preview-addresses">
-								<div class="wc-order-preview-address">
-									<h2><?php esc_html_e( 'Billing details', 'woocommerce' ); ?></h2>
-									{{{ data.formatted_billing_address }}}
-
-									<# if ( data.data.billing.email ) { #>
-										<strong><?php esc_html_e( 'Email', 'woocommerce' ); ?></strong>
-										<a href="mailto:{{ data.data.billing.email }}">{{ data.data.billing.email }}</a>
-									<# } #>
-
-									<# if ( data.data.billing.phone ) { #>
-										<strong><?php esc_html_e( 'Phone', 'woocommerce' ); ?></strong>
-										<a href="tel:{{ data.data.billing.phone }}">{{ data.data.billing.phone }}</a>
-									<# } #>
-
-									<# if ( data.payment_via ) { #>
-										<strong><?php esc_html_e( 'Payment via', 'woocommerce' ); ?></strong>
-										{{{ data.payment_via }}}
-									<# } #>
-								</div>
-								<# if ( data.needs_shipping ) { #>
-									<div class="wc-order-preview-address">
-										<h2><?php esc_html_e( 'Shipping details', 'woocommerce' ); ?></h2>
-										<# if ( data.ship_to_billing ) { #>
-											{{{ data.formatted_billing_address }}}
-										<# } else { #>
-											<a href="{{ data.shipping_address_map_url }}" target="_blank">{{{ data.formatted_shipping_address }}}</a>
+								<div class="wc-order-preview-address" style="width:100%">
+									<div class="fifty-percent" style="width: 50%;float: left;">
+										<h2><?php esc_html_e( 'Billing details', 'woocommerce' ); ?></h2>
+										{{{ data.formatted_billing_address }}}
+									</div>
+									<div class="fifty-percent" style="width: 50%;float: left;">
+										<# if ( data.data.billing.email ) { #>
+											<strong><?php esc_html_e( 'Email', 'woocommerce' ); ?></strong>
+											<a href="mailto:{{ data.data.billing.email }}">{{ data.data.billing.email }}</a>
 										<# } #>
 
-										<# if ( data.shipping_via ) { #>
-											<strong><?php esc_html_e( 'Shipping method', 'woocommerce' ); ?></strong>
-											{{ data.shipping_via }}
+										<# if ( data.data.billing.phone ) { #>
+											<strong><?php esc_html_e( 'Phone', 'woocommerce' ); ?></strong>
+											<a href="tel:{{ data.data.billing.phone }}">{{ data.data.billing.phone }}</a>
+										<# } #>
+
+										<# if ( data.payment_via ) { #>
+											<strong><?php esc_html_e( 'Payment via', 'woocommerce' ); ?></strong>
+											{{{ data.payment_via }}}
 										<# } #>
 									</div>
-								<# } #>
+								</div>
+<!--								<# if ( data.needs_shipping ) { #>-->
+<!--									<div class="wc-order-preview-address">-->
+<!--										<h2>--><?php //esc_html_e( 'Shipping details', 'woocommerce' ); ?><!--</h2>-->
+<!--										<# if ( data.ship_to_billing ) { #>-->
+<!--											{{{ data.formatted_billing_address }}}-->
+<!--										<# } else { #>-->
+<!--											<a href="{{ data.shipping_address_map_url }}" target="_blank">{{{ data.formatted_shipping_address }}}</a>-->
+<!--										<# } #>-->
+<!---->
+<!--										<# if ( data.shipping_via ) { #>-->
+<!--											<strong>--><?php //esc_html_e( 'Shipping method', 'woocommerce' ); ?><!--</strong>-->
+<!--											{{ data.shipping_via }}-->
+<!--										<# } #>-->
+<!--									</div>-->
+<!--								<# } #>-->
 
 								<# if ( data.data.customer_note ) { #>
 									<div class="wc-order-preview-note">
