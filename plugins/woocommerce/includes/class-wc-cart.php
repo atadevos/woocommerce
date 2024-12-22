@@ -50,6 +50,8 @@ class WC_Cart extends WC_Legacy_Cart {
 	 */
 	protected $shipping_methods;
 
+	public $couponCodeToApplyData = [];
+
 	/**
 	 * Total defaults used to reset.
 	 *

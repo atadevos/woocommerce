@@ -123,6 +123,7 @@ class WC_Coupon_Data_Store_CPT extends WC_Data_Store_WP implements WC_Coupon_Dat
 			array(
 				'code'                        => $post_object->post_title,
 				'pickup_location'			  => get_post_meta( $coupon_id, 'pickup_location', true ),
+				'minimum_quantity'			  => get_post_meta( $coupon_id, 'minimum_quantity', true ),
 				'description'                 => $post_object->post_excerpt,
 				'status'                      => $post_object->post_status,
 				'date_created'                => $this->string_to_timestamp( $post_object->post_date_gmt ),
@@ -248,6 +249,7 @@ class WC_Coupon_Data_Store_CPT extends WC_Data_Store_WP implements WC_Coupon_Dat
 			'usage_count'                => 'usage_count',
 			'date_expires'               => 'date_expires',
 			'pickup_location'            => 'pickup_location',
+			'minimum_quantity'           => 'minimum_quantity',
 			'free_shipping'              => 'free_shipping',
 			'product_categories'         => 'product_categories',
 			'exclude_product_categories' => 'excluded_product_categories',
@@ -404,7 +406,7 @@ class WC_Coupon_Data_Store_CPT extends WC_Data_Store_WP implements WC_Coupon_Dat
 		add_post_meta( $id, 'usage_count', $coupon->get_usage_count( 'edit' ), true );
 		$wpdb->query(
 			$wpdb->prepare(
-				// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				"UPDATE $wpdb->postmeta SET meta_value = meta_value {$operator} 1 WHERE meta_key = 'usage_count' AND post_id = %d;",
 				$id
 			)
@@ -426,7 +428,7 @@ class WC_Coupon_Data_Store_CPT extends WC_Data_Store_WP implements WC_Coupon_Dat
 	public function get_tentative_usage_count( $coupon_id ) {
 		global $wpdb;
 		return $wpdb->get_var(
-			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 			$this->get_tentative_usage_query( $coupon_id )
 		);
 	}

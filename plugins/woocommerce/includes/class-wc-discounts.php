@@ -732,6 +732,19 @@ class WC_Discounts {
 		return true;
 	}
 
+	protected function validate_coupon_minimum_quantity( $coupon ) {
+		$quantity = $this->get_object_items_quantity();
+
+		if(is_numeric($coupon->get_minimum_quantity()) ) {
+			if (!(intval($coupon->get_minimum_quantity()) > 0 && intval($coupon->get_minimum_quantity()) <= $quantity)) {
+				/* translators: %s: coupon maximum amount */
+				throw new Exception(sprintf(__('The minimum quantity for this coupon is %s items.', 'woocommerce'), $coupon->get_minimum_quantity()), 112);
+			}
+		}
+
+		return true;
+	}
+
 	/**
 	 * Ensure coupon is valid for products in the list is valid or throw exception.
 	 *
@@ -939,6 +952,17 @@ class WC_Discounts {
 		return true;
 	}
 
+
+	protected function get_object_items_quantity() {
+		if ( is_a( $this->object, 'WC_Cart' ) ) {
+			return $this->object->get_cart_contents_count();
+		} elseif ( is_a( $this->object, 'WC_Order' ) ) {
+			return $this->object->get_cart_item_quantities();
+		} else {
+			return array_sum( wp_list_pluck( $this->items, 'quantity' ) );
+		}
+	}
+
 	/**
 	 * Get the object subtotal
 	 *
@@ -998,6 +1022,8 @@ class WC_Discounts {
 			$this->validate_coupon_product_categories( $coupon );
 			$this->validate_coupon_excluded_items( $coupon );
 			$this->validate_coupon_eligible_items( $coupon );
+
+			$this->validate_coupon_minimum_quantity($coupon);
 
 			if ( ! apply_filters( 'woocommerce_coupon_is_valid', true, $coupon, $this ) ) {
 				throw new Exception( __( 'Coupon is not valid.', 'woocommerce' ), 100 );

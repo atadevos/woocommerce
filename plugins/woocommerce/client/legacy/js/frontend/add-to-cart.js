@@ -71,7 +71,7 @@ jQuery( function( $ ) {
 			$thisbutton.addClass( 'loading' );
 
 			// Allow 3rd parties to validate and quit early.
-			if ( false === $( document.body ).triggerHandler( 'should_send_ajax_request.adding_to_cart', [ $thisbutton ] ) ) { 
+			if ( false === $( document.body ).triggerHandler( 'should_send_ajax_request.adding_to_cart', [ $thisbutton ] ) ) {
 				$( document.body ).trigger( 'ajax_request_not_sent.adding_to_cart', [ false, false, $thisbutton ] );
 				return true;
 			}
@@ -113,7 +113,7 @@ jQuery( function( $ ) {
 					}
 
 					// Trigger event so themes can refresh other areas.
-					$( document.body ).trigger( 'added_to_cart', [ response.fragments, response.cart_hash, $thisbutton ] );
+					$( document.body ).trigger( 'added_to_cart', [ response.fragments, response.cart_hash, $thisbutton, response['additional_data'] ] );
 				},
 				dataType: 'json'
 			});
@@ -158,15 +158,48 @@ jQuery( function( $ ) {
 		});
 	};
 
+
+	var remove_notices = function ( $target ) {
+		if ( ! $target ) {
+			$target =
+				$( '.woocommerce-notices-wrapper:first' ) ||
+				$( '.wc-empty-cart-message' ).closest( '.woocommerce' ) ||
+				$( '.woocommerce-cart-form' );
+		}
+		$target.empty();
+	};
+
+	/**
+	 * Shows new notices on the page.
+	 *
+	 * @param {Object} The Notice HTML Element in string or object form.
+	 */
+	var show_notice = function ( html_element, $target ) {
+		if ( ! $target ) {
+			$target =
+				$( '.woocommerce-notices-wrapper:first' ) ||
+				$( '.wc-empty-cart-message' ).closest( '.woocommerce' ) ||
+				$( '.woocommerce-cart-form' );
+		}
+		$target.prepend( html_element );
+	};
+
 	/**
 	 * Update cart page elements after add to cart events.
 	 */
-	AddToCartHandler.prototype.updateButton = function( e, fragments, cart_hash, $button ) {
+	AddToCartHandler.prototype.updateButton = function( e, fragments, cart_hash, $button, additional_data ) {
+
+		remove_notices();
+		if(additional_data) {
+			const txt = `<div class="disc_notice">Add <span>${additional_data['coupon_next_apply_from']}</span> more item(s) to your cart to unlock <span>${additional_data['coupon_next_apply_discount']}%</span> discount</span></div>`;
+			show_notice(txt);
+		}
+
 		$button = typeof $button === 'undefined' ? false : $button;
 
 		if ( $button ) {
 			$button.removeClass( 'loading' );
-			
+
 			if ( fragments ) {
 				$button.addClass( 'added' );
 			}

@@ -5,6 +5,7 @@ use Automattic\WooCommerce\StoreApi\SchemaController;
 use Automattic\WooCommerce\StoreApi\Utilities\CartController;
 use Automattic\WooCommerce\StoreApi\Schemas\ExtendSchema;
 use WC_Tax;
+use Automattic\WooCommerce\Admin\API\Reports\Coupons\DataStore as CouponsDataStore;
 
 /**
  * CartSchema class.
@@ -348,7 +349,8 @@ class CartSchema extends AbstractSchema {
 		// Get visible cross sells products.
 		$cross_sells = array_filter( array_map( 'wc_get_product', $cart->get_cross_sells() ), 'wc_products_array_filter_visible' );
 
-		return [
+
+		$data = [
 			'items'                   => $this->get_item_responses_from_schema( $this->item_schema, $cart->get_cart() ),
 			'coupons'                 => $this->get_item_responses_from_schema( $this->coupon_schema, $cart->get_applied_coupons() ),
 			'fees'                    => $this->get_item_responses_from_schema( $this->fee_schema, $cart->get_fees() ),
@@ -365,8 +367,24 @@ class CartSchema extends AbstractSchema {
 			'cross_sells'             => $this->get_item_responses_from_schema( $this->cross_sells_item_schema, $cross_sells ),
 			'errors'                  => $cart_errors,
 			'payment_methods'         => array_values( wp_list_pluck( WC()->payment_gateways->get_available_payment_gateways(), 'id' ) ),
-			self::EXTENDING_KEY       => $this->get_extended_data( self::IDENTIFIER ),
+			self::EXTENDING_KEY       => $this->get_extended_data( self::IDENTIFIER )
 		];
+
+
+
+		if(!empty($cart->couponCodeToApplyData)) {
+			$data['additional_data'] = [];
+			if($cart->couponCodeToApplyData['apply']) {
+				$data['additional_data']['coupon_to_apply'] = $cart->couponCodeToApplyData['apply'];
+			}
+			if($cart->couponCodeToApplyData['nextApplyFrom']) {
+				$data['additional_data']['coupon_next_apply_from'] = $cart->couponCodeToApplyData['nextApplyFrom'];
+				$data['additional_data']['coupon_next_apply_discount'] = $cart->couponCodeToApplyData['nextApplyDiscount'];
+			}
+		}
+
+		return $data;
+
 	}
 
 	/**

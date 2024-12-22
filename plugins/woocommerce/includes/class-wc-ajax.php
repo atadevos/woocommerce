@@ -223,6 +223,7 @@ class WC_AJAX {
 
 		woocommerce_mini_cart();
 
+		\Automattic\WooCommerce\Utilities\OrderUtil::applyCartQuantityDiscounts();
 		$mini_cart = ob_get_clean();
 
 		$data = array(
@@ -234,6 +235,8 @@ class WC_AJAX {
 			),
 			'cart_hash' => WC()->cart->get_cart_hash(),
 		);
+
+		$data = array_merge($data, \Automattic\WooCommerce\Utilities\OrderUtil::getCartAdditionalDataResponse());
 
 		wp_send_json( $data );
 	}

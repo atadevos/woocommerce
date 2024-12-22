@@ -156,6 +156,19 @@ class WC_Meta_Box_Coupon_Data {
 				</p>
 				<?php
 
+				// minimum quantity of items to buy to apply this coupon
+				woocommerce_wp_text_input(
+					array(
+						'id'          => 'minimum_quantity',
+						'label'       => __( 'Minimum products quantity', 'woocommerce' ),
+						'placeholder' => __( 'No minimum', 'woocommerce' ),
+						'description' => __( 'This field sets the minimum quantity of meals required to apply this coupon. The coupon will be applied automatically when the quantity threshold is met.' ),
+						'data_type'   => 'number',
+						'desc_tip'    => true,
+						'value'       => $coupon->get_minimum_quantity( 'edit' ),
+					)
+				);
+
 				// minimum spend.
 				woocommerce_wp_text_input(
 					array(
@@ -398,6 +411,7 @@ class WC_Meta_Box_Coupon_Data {
 				'excluded_product_ids'        => isset( $_POST['exclude_product_ids'] ) ? array_filter( array_map( 'intval', (array) $_POST['exclude_product_ids'] ) ) : array(),
 				'usage_limit'                 => absint( $_POST['usage_limit'] ),
 				'pickup_location'             => sanitize_text_field( $_POST['pickup_location'] ),
+				'minimum_quantity'            => absint( $_POST['minimum_quantity'] ),
 				'usage_limit_per_user'        => absint( $_POST['usage_limit_per_user'] ),
 				'limit_usage_to_x_items'      => absint( $_POST['limit_usage_to_x_items'] ),
 				'free_shipping'               => isset( $_POST['free_shipping'] ),

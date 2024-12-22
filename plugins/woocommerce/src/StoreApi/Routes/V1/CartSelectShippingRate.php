@@ -98,6 +98,9 @@ class CartSelectShippingRate extends AbstractCartRoute {
 		 */
 		do_action( 'woocommerce_store_api_cart_select_shipping_rate', $package_id, $rate_id, $request );
 
+
+		$this->updateApplyQuantityCouponApply($cart);
+
 		$cart->calculate_shipping();
 		$cart->calculate_totals();
 

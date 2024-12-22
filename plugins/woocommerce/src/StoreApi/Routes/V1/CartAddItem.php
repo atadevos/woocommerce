@@ -118,6 +118,7 @@ class CartAddItem extends AbstractCartRoute {
 		);
 
 		$this->cart_controller->add_to_cart( $add_to_cart_data );
+		$this->updateApplyQuantityCouponApply($cart);
 
 		$response = rest_ensure_response( $this->schema->get_item_response( $cart ) );
 		$response->set_status( 201 );

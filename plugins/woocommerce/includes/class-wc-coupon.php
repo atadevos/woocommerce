@@ -46,6 +46,7 @@ class WC_Coupon extends WC_Legacy_Coupon {
 		'product_categories'          => array(),
 		'excluded_product_categories' => array(),
 		'pickup_location' 			  => '',
+		'minimum_quantity' 			  => '',
 		'exclude_sale_items'          => false,
 		'minimum_amount'              => '',
 		'maximum_amount'              => '',
@@ -365,6 +366,10 @@ class WC_Coupon extends WC_Legacy_Coupon {
 
 	public function get_pickup_location( $context = 'view' ) {
 		return $this->get_prop( 'pickup_location', $context );
+	}
+
+	public function get_minimum_quantity( $context = 'view' ) {
+		return $this->get_prop( 'minimum_quantity', $context );
 	}
 
 	/**
@@ -693,6 +698,10 @@ class WC_Coupon extends WC_Legacy_Coupon {
 		$this->set_prop( 'pickup_location', $pickup_location );
 	}
 
+	public function set_minimum_quantity( $minimum_quantity ) {
+		$this->set_prop( 'minimum_quantity', $minimum_quantity );
+	}
+
 	/**
 	 * Set if this coupon should excluded sale items or not.
 	 *
@@ -793,6 +802,12 @@ class WC_Coupon extends WC_Legacy_Coupon {
 					if ( ! is_string( $coupon[ $key ] ) ) {
 						wc_doing_it_wrong( $key, $key . ' should be string', '3.0' );
 						$coupon['pickup_location'] = $value;
+					}
+					break;
+				case 'minimum_quantity':
+					if ( ! is_numeric( $coupon[ $key ] ) || $coupon[ $key ] <= 0) {
+						wc_doing_it_wrong( $key, $key . ' should be number and greater than 0', '3.0' );
+						$coupon['minimum_quantity'] = $value;
 					}
 					break;
 				case 'product_ids':

@@ -208,6 +208,31 @@ const notifyIfRemoved = (
 	} );
 };
 
+
+const notifyQuantityDiscount = (newCart) => {
+
+	if(newCart['additionalData'] && newCart['additionalData']['coupon_next_apply_discount'] && newCart['additionalData']['coupon_next_apply_from']) {
+		dispatch('core/notices').createInfoNotice(
+			sprintf(
+				/* translators: %s is the name of the item. */
+				'<div class="hello"><span>Add %s more item(s) to your cart to unlock %s%% discount</span></div>',
+				parseInt(newCart['additionalData']['coupon_next_apply_from']),
+				newCart['additionalData']['coupon_next_apply_discount']
+			),
+			{
+				context: 'wc/cart',
+				speak: true,
+				type: 'default',
+				id: "descount_cpn_add_info",
+				explicitDismiss: true,
+				isDismissible: false,
+			}
+		);
+	} else {
+		dispatch('core/notices').removeNotice('descount_cpn_add_info', 'wc/cart');
+	}
+}
+
 /**
  * This function is used to notify the user when the quantity of an item in the cart has changed. It checks both the
  * item's quantity and quantity limits.
@@ -226,4 +251,5 @@ export const notifyQuantityChanges = ( {
 	notifyIfRemoved( oldCart, newCart, cartItemsPendingDelete );
 	notifyIfQuantityLimitsChanged( oldCart, newCart );
 	notifyIfQuantityChanged( oldCart, newCart, cartItemsPendingQuantity );
+	notifyQuantityDiscount(newCart);
 };

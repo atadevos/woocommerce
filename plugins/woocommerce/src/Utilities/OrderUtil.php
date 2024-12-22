@@ -27,6 +27,99 @@ final class OrderUtil {
 		return wc_get_container()->get( COTMigrationUtil::class )->get_order_admin_screen();
 	}
 
+	public static function applyCartQuantityDiscounts() {
+
+		$cart = wc()->cart;
+		$cartController = new \Automattic\WooCommerce\StoreApi\Utilities\CartController();
+
+		$itemsCount = array_reduce($cart->get_cart_item_quantities(), function ( $carry, $item ) {
+			return $carry + $item;
+		}, 0);
+
+		$query_args = array(
+			'fields'      => 'ids',
+			'post_type'   => 'shop_coupon',
+			'post_status' => 'publish',
+			'numberposts' => -1,
+			'meta_query'  => [
+				[
+					'key'     => 'minimum_quantity',
+					'value'   => 0,
+					'compare' => '>',
+					'type'    => 'NUMERIC',
+				]
+			]
+		);
+
+		$coupon_ids = (new \WP_Query($query_args))->get_posts();
+
+		$minimumMinQuantity = 0;
+		$nextMinQuantity = PHP_INT_MAX;
+		$couponToApply = null;
+		$nextCoupon = null;
+		$quantityDiscountCoupons = [];
+
+		foreach ($coupon_ids as $coupon_id) {
+			$coupon = new \WC_Coupon($coupon_id); // Load coupon object
+			$couponMinQuantity = intval($coupon->get_minimum_quantity());
+
+			$quantityDiscountCoupons[] = $coupon->get_code();
+			// Determine the best coupon to apply
+			if ($couponMinQuantity > $minimumMinQuantity && $couponMinQuantity <= $itemsCount) {
+				$minimumMinQuantity = $couponMinQuantity;
+				$couponToApply = $coupon->get_code();
+			}
+
+			// Determine the next coupon based on quantity threshold
+			if ($couponMinQuantity > $itemsCount && $couponMinQuantity < $nextMinQuantity) {
+				$nextMinQuantity = $couponMinQuantity;
+				$nextCoupon = $coupon;
+			}
+		}
+
+		try {
+			$otherCouponApplied = true;
+			$appliedCoupons = $cart->get_applied_coupons();
+			// Check if there are no coupons or only quantity discount coupons applied
+			if (empty($appliedCoupons) ||
+				(count($appliedCoupons) == 1 && in_array($appliedCoupons[0], $quantityDiscountCoupons))) {
+				$otherCouponApplied = false;
+			}
+//			$otherCouponApplied = count($cart->get_applied_coupons()) > 0 && !in_array($cart->get_applied_coupons()[0], $quantityDiscountCoupons);
+			if ($couponToApply) {
+
+				// If no other coupons are applied or if the coupon to apply is different from the one in the cart
+				if (!$otherCouponApplied &&
+					((count($appliedCoupons) == 1 && $couponToApply != $appliedCoupons[0]) || count($appliedCoupons) === 0)) {
+					$cart->remove_coupons();
+					$cartController->apply_coupon($couponToApply);
+				}
+			}
+
+			if ($nextCoupon && !$otherCouponApplied) {
+				$cart->couponCodeToApplyData['nextApplyFrom'] = $nextCoupon->get_minimum_quantity() - $cart->get_cart_contents_count();
+				$cart->couponCodeToApplyData['nextApplyDiscount'] = $nextCoupon->get_amount();
+			}
+		} catch ( \Exception $e ) {
+			//apply coupon failed
+		}
+	}
+
+	public static function getCartAdditionalDataResponse() {
+		$cart = wc()->cart;
+		$data = [];
+		if(!empty($cart->couponCodeToApplyData)) {
+			$data['additional_data'] = [];
+			if($cart->couponCodeToApplyData['apply']) {
+				$data['additional_data']['coupon_to_apply'] = $cart->couponCodeToApplyData['apply'];
+			}
+			if($cart->couponCodeToApplyData['nextApplyFrom']) {
+				$data['additional_data']['coupon_next_apply_from'] = $cart->couponCodeToApplyData['nextApplyFrom'];
+				$data['additional_data']['coupon_next_apply_discount'] = $cart->couponCodeToApplyData['nextApplyDiscount'];
+			}
+		}
+		return $data;
+	}
 
 	/**
 	 * Helper function to get whether custom order tables are enabled or not.

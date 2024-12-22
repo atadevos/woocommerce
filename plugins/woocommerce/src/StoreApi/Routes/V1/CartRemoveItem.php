@@ -66,6 +66,7 @@ class CartRemoveItem extends AbstractCartRoute {
 
 		$cart->remove_cart_item( $request['key'] );
 		$this->maybe_release_stock();
+		$this->updateApplyQuantityCouponApply($cart);
 
 		return rest_ensure_response( $this->schema->get_item_response( $cart ) );
 	}

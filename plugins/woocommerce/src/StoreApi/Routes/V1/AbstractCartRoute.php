@@ -352,4 +352,9 @@ abstract class AbstractCartRoute extends AbstractRoute {
 
 		return new \WP_Error( $error_code, $error_message, [ 'status' => $http_status_code ] );
 	}
+
+
+	protected function updateApplyQuantityCouponApply( $cart ) {
+		\Automattic\WooCommerce\Utilities\OrderUtil::applyCartQuantityDiscounts();
+	}
 }
