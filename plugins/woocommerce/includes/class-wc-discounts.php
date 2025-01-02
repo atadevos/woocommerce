@@ -735,10 +735,10 @@ class WC_Discounts {
 	protected function validate_coupon_minimum_quantity( $coupon ) {
 		$quantity = $this->get_object_items_quantity();
 
-		if(is_numeric($coupon->get_minimum_quantity()) ) {
-			if (!(intval($coupon->get_minimum_quantity()) > 0 && intval($coupon->get_minimum_quantity()) <= $quantity)) {
+		if(is_numeric($coupon->get_minimum_quantity()) && intval($coupon->get_minimum_quantity(), 10) > 0) {
+			if (intval($coupon->get_minimum_quantity()) !== $quantity) {
 				/* translators: %s: coupon maximum amount */
-				throw new Exception(sprintf(__('The minimum quantity for this coupon is %s items.', 'woocommerce'), $coupon->get_minimum_quantity()), 112);
+				throw new Exception(sprintf(__('The exact quantity for this coupon is %s items.', 'woocommerce'), $coupon->get_minimum_quantity()), 112);
 			}
 		}
 

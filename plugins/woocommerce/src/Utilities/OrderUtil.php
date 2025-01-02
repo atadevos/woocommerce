@@ -65,7 +65,7 @@ final class OrderUtil {
 
 			$quantityDiscountCoupons[] = $coupon->get_code();
 			// Determine the best coupon to apply
-			if ($couponMinQuantity > $minimumMinQuantity && $couponMinQuantity <= $itemsCount) {
+			if ($couponMinQuantity === $itemsCount) {
 				$minimumMinQuantity = $couponMinQuantity;
 				$couponToApply = $coupon->get_code();
 			}
@@ -87,12 +87,15 @@ final class OrderUtil {
 			}
 //			$otherCouponApplied = count($cart->get_applied_coupons()) > 0 && !in_array($cart->get_applied_coupons()[0], $quantityDiscountCoupons);
 			if ($couponToApply) {
-
 				// If no other coupons are applied or if the coupon to apply is different from the one in the cart
-				if (!$otherCouponApplied &&
-					((count($appliedCoupons) == 1 && $couponToApply != $appliedCoupons[0]) || count($appliedCoupons) === 0)) {
-					$cart->remove_coupons();
-					$cartController->apply_coupon($couponToApply);
+				if( !$otherCouponApplied) {
+					//remove quantity coupon from cart
+					if(count($appliedCoupons) == 1) {
+						$cart->remove_coupons();
+					}
+					if (count($appliedCoupons) == 0) {
+						$cartController->apply_coupon($couponToApply);
+					}
 				}
 			}
 

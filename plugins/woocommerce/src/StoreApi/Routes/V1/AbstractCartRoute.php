@@ -14,6 +14,7 @@ use Automattic\WooCommerce\StoreApi\Utilities\CartController;
 use Automattic\WooCommerce\StoreApi\Utilities\DraftOrderTrait;
 use Automattic\WooCommerce\StoreApi\Utilities\JsonWebToken;
 use Automattic\WooCommerce\StoreApi\Utilities\OrderController;
+use Automattic\WooCommerce\Utilities\OrderUtil;
 
 /**
  * Abstract Cart Route
@@ -355,6 +356,6 @@ abstract class AbstractCartRoute extends AbstractRoute {
 
 
 	protected function updateApplyQuantityCouponApply( $cart ) {
-		\Automattic\WooCommerce\Utilities\OrderUtil::applyCartQuantityDiscounts();
+		OrderUtil::applyCartQuantityDiscounts();
 	}
 }
