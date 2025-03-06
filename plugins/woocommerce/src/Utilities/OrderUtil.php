@@ -86,16 +86,16 @@ final class OrderUtil {
 				$otherCouponApplied = false;
 			}
 //			$otherCouponApplied = count($cart->get_applied_coupons()) > 0 && !in_array($cart->get_applied_coupons()[0], $quantityDiscountCoupons);
-			if ($couponToApply) {
+			if ($couponToApply && !$otherCouponApplied) {
 				// If no other coupons are applied or if the coupon to apply is different from the one in the cart
-				if( !$otherCouponApplied) {
-					//remove quantity coupon from cart
-					if(count($appliedCoupons) == 1) {
-						$cart->remove_coupons();
-					}
-					if (count($appliedCoupons) == 0) {
-						$cartController->apply_coupon($couponToApply);
-					}
+
+				//remove quantity coupon from cart
+				if(count($appliedCoupons) == 1) {
+					$cart->remove_coupons();
+					$appliedCoupons = [];
+				}
+				if (count($appliedCoupons) == 0) {
+					$cartController->apply_coupon($couponToApply);
 				}
 			}
 
