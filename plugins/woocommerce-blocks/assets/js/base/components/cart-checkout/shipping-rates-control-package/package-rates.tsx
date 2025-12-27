@@ -34,16 +34,19 @@ const PackageRates = ( {
 	selectedRate,
 	disabled = false,
 }: PackageRates ): JSX.Element => {
+
 	const selectedRateId = selectedRate?.rate_id || '';
 	const previousSelectedRateId = usePrevious( selectedRateId );
 
 	// Store selected rate ID in local state so shipping rates changes are shown in the UI instantly.
 	const [ selectedOption, setSelectedOption ] = useState( () => {
+		return undefined;
 		if ( selectedRateId ) {
 			return selectedRateId;
 		}
 		// Default to first rate if no rate is selected.
-		return rates[ 0 ]?.rate_id;
+		return 0;// rates[ 0 ]?.rate_id;
+		// return rates[ 0 ]?.rate_id;
 	} );
 
 	// Update the selected option if cart state changes in the data store.
@@ -53,7 +56,7 @@ const PackageRates = ( {
 			selectedRateId !== previousSelectedRateId &&
 			selectedRateId !== selectedOption
 		) {
-			setSelectedOption( selectedRateId );
+			// setSelectedOption( selectedRateId );
 		}
 	}, [ selectedRateId, selectedOption, previousSelectedRateId ] );
 
@@ -68,6 +71,8 @@ const PackageRates = ( {
 	if ( rates.length === 0 ) {
 		return noResultsMessage;
 	}
+
+	console.log("Selected Option", selectedOption, selectedRate);
 
 	if ( rates.length > 1 ) {
 		return (

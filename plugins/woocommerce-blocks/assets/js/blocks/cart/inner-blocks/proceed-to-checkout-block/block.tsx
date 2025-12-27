@@ -7,10 +7,10 @@ import Button from '@woocommerce/base-components/button';
 import { CHECKOUT_URL } from '@woocommerce/block-settings';
 import { usePositionRelativeToViewport } from '@woocommerce/base-hooks';
 import { getSetting } from '@woocommerce/settings';
-import { useSelect } from '@wordpress/data';
+import {dispatch, useSelect} from '@wordpress/data';
 import { CART_STORE_KEY, CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 import { applyCheckoutFilter } from '@woocommerce/blocks-checkout';
-import { isErrorResponse } from '@woocommerce/base-context';
+import {isErrorResponse, useCheckoutEventsContext, useShippingData, useShippingDataContext} from '@woocommerce/base-context';
 import { useCartEventsContext } from '@woocommerce/base-context/providers';
 
 /**
@@ -30,6 +30,10 @@ const Block = ( {
 	className: string;
 	buttonLabel: string;
 } ): JSX.Element => {
+
+
+
+
 	const link = getSetting< string >( 'page-' + checkoutPageId, false );
 	const isCalculating = useSelect( ( select ) =>
 		select( CHECKOUT_STORE_KEY ).isCalculating()
@@ -39,7 +43,17 @@ const Block = ( {
 		usePositionRelativeToViewport();
 	const [ showSpinner, setShowSpinner ] = useState( false );
 
+	const [ pickupLocationSelected, setPickupLocationSelected ] = useState( false );
+
+	const { onShippingRateSelectSuccess } = useShippingDataContext();
+
 	useEffect( () => {
+
+		onShippingRateSelectSuccess(() => {
+			dispatch('core/notices').removeNotice('descount_cpn_add_info_1', 'wc/cart');
+			setPickupLocationSelected(true);
+		} )
+
 		// Add a listener to remove the spinner on the checkout button, so the saved page snapshot does not
 		// contain the spinner class. See https://archive.is/lOEW0 for why this is needed for Safari.
 
@@ -77,12 +91,41 @@ const Block = ( {
 
 	const { dispatchOnProceedToCheckout } = useCartEventsContext();
 
+	// const pp = useShippingData();
+	// console.log(pp);
+	// // const hasSelectedLocalPickup = false;
+	// // const { hasSelectedLocalPickup } = useShippingData();
+
 	const submitContainerContents = (
 		<Button
 			className="wc-block-cart__submit-button"
 			href={ filteredLink }
 			disabled={ isCalculating }
 			onClick={ ( e ) => {
+
+				dispatch('core/notices').removeNotice('descount_cpn_add_info_1', 'wc/cart');
+
+				if(!pickupLocationSelected) {
+					e.preventDefault();
+
+
+					dispatch('core/notices').createErrorNotice(
+						"You should select pickup location first",
+						{
+							context: 'wc/cart',
+							speak: true,
+							type: 'default',
+							id: "descount_cpn_add_info_1",
+							explicitDismiss: true,
+							isDismissible: true,
+						}
+					);
+
+					// alert("You should select pickup location first");
+					return;
+				}
+
+
 				dispatchOnProceedToCheckout().then( ( observerResponses ) => {
 					if ( observerResponses.some( isErrorResponse ) ) {
 						e.preventDefault();

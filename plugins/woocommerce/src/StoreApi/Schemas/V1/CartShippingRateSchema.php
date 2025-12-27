@@ -313,6 +313,7 @@ class CartShippingRateSchema extends AbstractSchema {
 				'instance_id'   => $this->get_rate_prop( $rate, 'instance_id' ),
 				'method_id'     => $this->get_rate_prop( $rate, 'method_id' ),
 				'meta_data'     => $this->get_rate_meta_data( $rate ),
+//				'selected'      => false, //$selected_rate === $this->get_rate_prop( $rate, 'id' ),
 				'selected'      => $selected_rate === $this->get_rate_prop( $rate, 'id' ),
 			]
 		);
